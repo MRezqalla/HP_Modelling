@@ -12,12 +12,24 @@ def main():
     pass
 
 
-def energy_consumption(temp, demand, cooling, heating):
+def energy_consumption(temp, demand, cooling, heating, x):
     
     if (temp >= T_ref):
         COP = (temp-T_ref) * cooling[0] + cooling[1]
     else:
         COP = (temp-T_ref) * heating[0] + heating[1]
+    
+    if (x == 2 and temp < T_ref):
+        NG = demand * 0.8
+        demand = 0.2 * demand
+        EC = demand / COP
+        return COP, EC, NG
+        
+    elif (x == 2 and temp >= T_ref):
+        NG = 0
+        EC = demand / COP
+        return COP, EC, NG
+        
 
     EG = demand / COP
     
@@ -90,7 +102,7 @@ demand = float(input("Enter Energy Demand (Answer returned in this unit): "))
 if choice == 1:
     cooling = find_avg_line(coeff_c_R410a, intrcpts_c_R410a)
     heating = find_avg_line(coeff_h_R410a, intrcpts_h_R410a)
-    COP, demand = energy_consumption(temp,demand, cooling, heating)
+    COP, demand = energy_consumption(temp,demand, cooling, heating,1)
     
     print("Energy Demand = " + str(round(demand,2)))
     
@@ -105,7 +117,7 @@ if choice == 1:
 elif choice == 2:
     cooling = find_avg_line(coeff_c_R32, intrcpts_c_R32)
     heating = find_avg_line(coeff_h_R32, intrcpts_h_R32)
-    COP, demand = energy_consumption(temp,demand, cooling, heating)
+    COP, demand = energy_consumption(temp,demand, cooling, heating,1)
     
     print("Energy Demand = " + str(round(demand,2)))
     
@@ -120,7 +132,10 @@ elif choice == 2:
 elif choice == 3:
     cooling = find_avg_line(coeff_c_DF, intrcpts_c_DF)
     heating = find_avg_line(coeff_h_DF, intrcpts_h_DF)
-    COP, demand = energy_consumption(temp,demand, cooling, heating)
+    COP, demand, ng = energy_consumption(temp,demand, cooling, heating, 2)
+    
+    print("Energy Demand = " + str(round(demand,2)))
+    print("Natural Gas Demand = " + str(round(ng,2)))
 
     if plotting == "Y" or plotting == "y":
         plot_line(cooling,x,"DF Avg Cooling")
@@ -141,13 +156,14 @@ elif choice == 4:
     cooling_d = find_avg_line(coeff_c_DF, intrcpts_c_DF)
     heating_d = find_avg_line(coeff_h_DF, intrcpts_h_DF)
     
-    COP1, demand1 = energy_consumption(temp,demand, cooling_4, heating_4)
-    COP2, demand2 = energy_consumption(temp,demand, cooling_3, heating_3)
-    COP3, demand3 = energy_consumption(temp,demand, cooling_d, heating_d)
+    COP1, demand1 = energy_consumption(temp,demand, cooling_4, heating_4,1)
+    COP2, demand2 = energy_consumption(temp,demand, cooling_3, heating_3,1)
+    COP3, demand3, NG = energy_consumption(temp,demand, cooling_d, heating_d,2)
     
     print("Energy Demand R410a = " + str(round(demand1,2)))
     print("Energy Demand R32 = " + str(round(demand2,2)))
     print("Energy Demand Dual Fuel = " + str(round(demand3,2)))
+    print("Natural Gas Demand Dual Fuel = " + str(round(NG,2)))
 
     if plotting == "Y" or plotting == "y":
         plot_line(cooling_4,x,"R410 Avg Cooling")
