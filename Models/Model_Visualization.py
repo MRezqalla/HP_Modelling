@@ -178,5 +178,7 @@ elif choice == 4:
         plot_line(temp, COP3,"Chosen Point Dual Fuel","y")
 
         plt.title("Models")
+        
+        plt.grid(alpha=0.15)
         plt.show()
 
