@@ -29,8 +29,8 @@ def consumption_DF(temp, demand):
     #In heating mode, furnace assumed to deal with 80% of demand (AFUE value)
     #NGC = Natural Gas Consumption
         COP = 0.03932384 * (temp - TREF) + 4.2763154960000005
-        NGC = 0.8 * demand
-        ED = 0.2 * demand
+        NGC = 0.81 * demand
+        ED = 0.19 * demand
         EC = ED / COP
         
         return NGC, EC
