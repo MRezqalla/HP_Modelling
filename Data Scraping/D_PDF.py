@@ -1,5 +1,8 @@
 import sys
 
+##START - FIRST Page of FIRST HP model u want to study
+##END - FIRST Page of LAST HP model u want to study
+##HEAT - Heating values page
 START = 4
 END = 13
 HEAT = 14
@@ -20,6 +23,12 @@ try:
 except:
     sys.exit("MISSING NEEDED PACKAGES")
 
+##Plots all given info
+##Parameters:
+##c - slopes of cooling
+##i - intrcpts of cooling
+##ch - slopes of Heating
+##ih - intrcpts of heating
 def plot_results(c,i,ch,ih):
     x = np.linspace(60,120)
     x_h = np.linspace(-10,65)
@@ -37,22 +46,27 @@ def plot_results(c,i,ch,ih):
     plt.xlabel("Temperature (F)")
     plt.ylabel("COP")
     
-
+##Prints all given info
+##Parameters:
+##coeff_c - slopes of cooling
+##intrcpt_c - intrcpts of cooling
+##coeff_h - slopes of Heating
+##intrcpt_h - intrcpts of heating
 def print_results(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
     for cc,ic,ch,ih in zip(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
         print("COP = T * " + str(cc) + " + " + str(ic))
         print("COP = T * " + str(ch) + " + " + str(ih))
         print("\n")
     
-
-##Remove all NaN in cooling data with blankspace -- potentially useless 
-##Imports data to excel -- using excel seems easier than using pandas dataframe
-
+#Makes the excel file to use the data
+#Parameter:
+#file - data file (pdf)
 def generateExcel(file):
     
     data = tb.read_pdf(file,area = [50,0,555,780], pages=str(START)+"-"+str(END),lattice=False,pandas_options={'header': None},stream=True)
     heating_data = tb.read_pdf(file, pages=HEAT,pandas_options={'header': None},stream=True)
     
+    #Cooling data
     i = 0
     with pd.ExcelWriter('output.xlsx') as writer:   
         for dataset in data:
@@ -62,9 +76,7 @@ def generateExcel(file):
             dataset.to_excel(writer, sheet_name='Sheet_name'+str(i+1))
     i=0
 
-    ##Remove all NaN in heating data with blankspace -- potentially useless 
-    ##Imports data to excel -- using excel seems easier than using pandas dataframe
-
+    #Heating Data
     with pd.ExcelWriter('output_h.xlsx') as writer:   
         for dataset in heating_data:
             dataset = dataset.replace(np.nan, '',regex=True)
@@ -77,6 +89,9 @@ def generateExcel(file):
     
     return wrbk, wrbk_heating
 
+
+##Paramaters are return values of top fuction
+#This function basically gets the important info from the data
 
 def stripData(wrbk, wrbk_heating):
     kw = []
@@ -137,7 +152,7 @@ def stripData(wrbk, wrbk_heating):
 
         
 
-
+##Gets COPS of heating section, they are explicitly stated so i just take them
 def getHeatingCOPs(wrbk_heating):
 
     COPs_heating = []
@@ -149,14 +164,13 @@ def getHeatingCOPs(wrbk_heating):
             for cell in row:
                 if k == 9:
                     COP.extend(map(float,str(cell.value).split()))
-                    # COP.extend((str(cell.value).split()))
                 if cell.value == "COP":
                     k = 9
         COPs_heating.append(COP)
-    # print(COPs_heating)
     
     return COPs_heating
 
+#Gets COPs from MBhs (Heat) and kws (Energy)
 def getCOPs(MBhs,kws,con_rate):
     COPs = []
     for i in range(len(MBhs)):
@@ -164,6 +178,7 @@ def getCOPs(MBhs,kws,con_rate):
         
     return COPs
 
+#Does linear regression on the COPs and returns the slopes and intercepts of both cooling and heating
 def getCoeffs(COPs,COPs_heating,temps,heating_temps):
     i = 0
     x = np.linspace(65,115)[:,None]
@@ -237,22 +252,22 @@ def main():
     kws, MBhs = stripData(wrbk,wrbk_heating)
     COPs = getCOPs(MBhs, kws, con_rate)
     COPs_heating = getHeatingCOPs(wrbk_heating)
-    # print(COPs_heating)
     c,i,ch,ih = getCoeffs(COPs,COPs_heating,temps,heating_temps)
     
-    a,b,x,y = 0,0,0,0
-    for k in range(len(c)):
-        a = a + c[k]
-        b = b + 65 * c[k] + i[k]
-        x = x + ch[k]
-        y = y + 65 * ch[k] + ih[k]
-        
-    a = a / len(c)
-    b = b / len(c)
-    x = x / len(c)
-    y = y / len(c)
-    
-    print(a,b,x,y)
+##For average heating and cooling line at T_ref = 65, uncomment this
+#    a,b,x,y = 0,0,0,0
+#    for k in range(len(c)):
+#        a = a + c[k]
+#        b = b + 65 * c[k] + i[k]
+#        x = x + ch[k]
+#        y = y + 65 * ch[k] + ih[k]
+#
+#    a = a / len(c)
+#    b = b / len(c)
+#    x = x / len(c)
+#    y = y / len(c)
+#
+#    print(a,b,x,y)
 
     print_results(c, i, ch, ih)
     if plotting == True:

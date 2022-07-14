@@ -11,14 +11,15 @@ try:
     import os
 except:
     sys.exit("Missing Packages")
-##CHANGE TEMPS AND TEMPS HEAT THEN RUN    
 
+#Prints final results, prints the cooling and heating eqns
 def print_results(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
     for cc,ic,ch,ih in zip(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
         print("COP = T * " + str(cc) + " + " + str(ic))
         print("COP = T * " + str(ch) + " + " + str(ih))
         print("\n")
     
+#Uses the data to find the linear regression slopes and returns them
 def get_coeffs(rows_to_study_c_heat,rows_to_study_c_cool,temps,temps_heat,plotting):
     i = 0
     regr_c = linear_model.LinearRegression()
@@ -77,6 +78,7 @@ def get_coeffs(rows_to_study_c_heat,rows_to_study_c_cool,temps,temps_heat,plotti
             
     return coeff_c, intrcpt_c, coeff_h, intrcpt_h
 
+#Useful data is extracted
 def filter_data(datasets):
     g = -1
     AFRs = []
@@ -127,6 +129,7 @@ def filter_data(datasets):
     
     return AFRs, rows_to_study_c_heat, rows_to_study_c_cool, rows_to_study_f_heat, rows_to_study_f_cool
 
+#Reads the pdf and generates the dataframes
 def get_datasets(file):
     datasets = []
     s = int(input("First Page: "))
@@ -141,6 +144,8 @@ def get_datasets(file):
         datasets.append(data)
     return datasets
 
+
+#Transforms the dataframes to excel sheets
 def generate_excel_files(datasets):
     k = 1
     for dataset in datasets:
@@ -157,11 +162,12 @@ def generate_excel_files(datasets):
 
 
 def main():
+    #Must be changed to match specific heat pump
     temps_heat = [50,68,86,95,104,115]
     temps = [-13,-4,5,14,23,32,43,60]
+    #Make false if you dont like pictures
     plot = True
-    statistics = False
-
+    
     file = input("ENTER FILE NAME WITH EXTENTION .pdf: ")
     datasets = get_datasets(file)
     generate_excel_files(datasets)
