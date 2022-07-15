@@ -9,7 +9,7 @@
     - or it can return regression coeffecients (Recommended method)
 
 ## To data scrape:
-- Current files can scrape data from either: DAIKIN Engineering Manuals, DAIKIN (idk what its called) other format seen below
+- Current files can scrape data from either: DAIKIN Engineering Manuals, DAIKIN (idk what it's called) other format seen below
 <img width="696" alt="Screen Shot 2022-07-12 at 2 30 26 PM" src="https://user-images.githubusercontent.com/67717667/178568153-a6a10e7a-e557-4120-900b-d6c384f3ecbd.png">
 
 ### For Engineering Manuals
