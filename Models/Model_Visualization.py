@@ -65,6 +65,7 @@ def plot_line(coeffs,temps,name,color = "r"):
     if(type(coeffs) != float):
         valz = (temps - T_ref) * coeffs[0] + coeffs[1]
         plt.plot(temps, valz,color,label=name)
+        plt.ylim(0,6.5)
 
     else:
         plt.plot(coeffs,temps.item(),"*y",markersize=10,label=name)
@@ -124,11 +125,12 @@ def main():
         print("Energy Demand = " + str(round(demand,2)))
         
         if plotting == "Y" or plotting == "y":
-            plot_line(cooling,x,"R410 Avg Cooling")
-            plot_line(heating,x_heating,"R410 Avg Heating")
-            plot_line(temp, COP,"Chosen Point","y")
-
-            plt.title("Average R410 Model")
+            plot_line(cooling,x,"R410A Avg Cooling")
+            plot_line(heating,x_heating,"R410A Avg Heating")
+#            plot_line(temp, COP,"Chosen Point","y")
+            plt.grid(alpha=0.15)
+            plt.title("Average R410A Model")
+            plt.savefig('r4A.png',dpi=600)
             plt.show()
     
     #R32
@@ -142,9 +144,10 @@ def main():
         if plotting == "Y" or plotting == "y":
             plot_line(cooling,x,"R32 Avg Cooling")
             plot_line(heating,x_heating,"R32 Avg Heating")
-            plot_line(temp, COP,"Chosen Point","y")
-            
+#            plot_line(temp, COP,"Chosen Point","y")
+            plt.grid(alpha=0.15)
             plt.title("Average R32 Model")
+            plt.savefig('r2.png',dpi=600)
             plt.show()
     
     #Dual Fuel
@@ -159,9 +162,10 @@ def main():
         if plotting == "Y" or plotting == "y":
             plot_line(cooling,x,"DF Avg Cooling")
             plot_line(heating,x_heating,"DF Avg Heating")
-            plot_line(temp, COP,"Chosen Point","y")
-
+#            plot_line(temp, COP,"Chosen Point","y")
+            plt.grid(alpha=0.15)
             plt.title("Average DF Model")
+            plt.savefig('d.png',dpi=600)
             plt.show()
 
     
@@ -187,20 +191,22 @@ def main():
         print("Natural Gas Demand Dual Fuel = " + str(round(NG,2)))
 
         if plotting == "Y" or plotting == "y":
-            plot_line(cooling_4,x,"R410 Avg Cooling")
-            plot_line(heating_4,x_heating,"R410 Avg Heating")
+            plot_line(cooling_4,x,"R410A Avg Cooling")
+            plot_line(heating_4,x_heating,"R410A Avg Heating")
             plot_line(cooling_3,x,"R32 Avg Cooling","g")
             plot_line(heating_3,x_heating,"R32 Avg Heating","g")
             plot_line(cooling_d,x,"DF Avg Cooling","b")
             plot_line(heating_d,x_heating,"DF Avg Heating","b")
             
-            plot_line(temp, COP1,"Chosen Point R410a","y")
-            plot_line(temp, COP2,"Chosen Point R32" ,"y")
-            plot_line(temp, COP3,"Chosen Point Dual Fuel","y")
+#            plot_line(temp, COP1,"Chosen Point R410a","y")
+#            plot_line(temp, COP2,"Chosen Point R32" ,"y")
+#            plot_line(temp, COP3,"Chosen Point Dual Fuel","y")
+            plt.grid(alpha=0.15)
 
             plt.title("Models")
             
             plt.grid(alpha=0.15)
+            plt.savefig('c.png',dpi=600)
             plt.show()
     
 if __name__ == "__main__":
