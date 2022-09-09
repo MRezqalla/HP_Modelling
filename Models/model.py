@@ -46,9 +46,17 @@ def consumption_DF(temp, demand):
 #2 - R32
 #3 - Dual Fuel
 
-def get_coeffs(choice):
+def get_coeffs_f(choice):
     if choice == 1:
         return [-0.05575555555555556,5.31175], [0.03555111111111112,4.4678666666666675]
+    elif choice == 2:
+        return [-0.078,6.0305], [0.02245,3.323625]
+    elif choice == 3:
+        return [-0.034502276,4.725396194], [0.03932384,4.2763154960000005]
+
+def get_coeffs_c(choice):
+    if choice == 1:
+        return [-0.10036,7.15168], [0.063992,3.29468]
     elif choice == 2:
         return [-0.078,6.0305], [0.02245,3.323625]
     elif choice == 3:
