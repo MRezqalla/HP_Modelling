@@ -5,8 +5,10 @@
 - Go to Models Folder
 - Choose Model_Visualization.py to see performance graphs
 - Choose m.py for use in projects 
-    - m.py can either return consumption if energy demand and temperature were given 
-    - or it can return regression coeffecients (Recommended method)
+    - model.py can either return consumption if energy demand and temperature were given 
+    - or it can return regression coeffecients (Recommended method) 
+    - Able to use both fahrenheit and celsius, hafrenheit by default, celsius if 'c' is passed as the third arguemnt 
+    - MAKE SURE TO SUBTRACT T_REF (65F or 18.33C)
 
 ## To data scrape:
 - Current files can scrape data from either: DAIKIN Engineering Manuals, DAIKIN (idk what it's called) other format seen below
