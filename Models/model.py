@@ -7,10 +7,10 @@ def consumption_R410a(temp, demand, unit='f'):
 
     if (unit == 'c'):
         if (temp >= 18):
-            COP = -0.10036 * (temp - TREF_C) + 7.15168
+            COP = -0.10036 * (temp) + 7.15168
    
         elif (temp < 18):
-            COP = 0.063992 * (temp - TREF_C) + 3.29468
+            COP = 0.063992 * (temp) + 3.29468
         EC = demand / COP
         return EC
     
@@ -29,10 +29,10 @@ def consumption_R32(temp, demand, unit='f'):
 
     if (unit == 'c'):
         if (temp >= 18):
-            COP = -0.1404 * (temp - TREF_C) + 8.6045
+            COP = -0.1404 * (temp) + 8.6045
    
         elif (temp < 18):
-            COP = 0.04041 * (temp - TREF_C) + 2.582775
+            COP = 0.04041 * (temp) + 2.582775
         EC = demand / COP
         return EC
         
@@ -47,10 +47,10 @@ def consumption_DF(temp, demand, unit='f'):
 
     if (unit == 'c'):
         if (temp >= 18):
-            COP = -0.0621040968 * (temp - TREF_C) + 5.863971302
+            COP = -0.0621040968 * (temp) + 5.863971302
    
         elif (temp < 18):
-            COP = 0.070782912 * (temp - TREF_C) + 2.9786287760000005
+            COP = 0.070782912 * (temp) + 2.9786287760000005
         EC = demand / COP
         return EC
         
