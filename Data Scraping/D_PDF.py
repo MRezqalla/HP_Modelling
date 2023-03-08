@@ -9,7 +9,7 @@ HEAT = 14
 
 try:
     import CoolProp.CoolProp as CP #package that gets thermodynamic properties for stuff
-    import tabula as tb
+    # import tabula as tb
     import pandas as pd
     import re
     import numpy as np
@@ -242,7 +242,7 @@ def main():
     con_rate = 0.2930710702
 
     ##Temperatures that loaded cooling data is on -- Could also use renaming
-    temps = [65,75,85,95,105,115]
+    cooling_temps = [65,75,85,95,105,115]
 
     ##Temperatures that loaded heating data is on
     heating_temps = [65,60,55,50,47,45,40,35,30,25,20,17,15,10,5,0,-5,-10]
@@ -252,7 +252,7 @@ def main():
     kws, MBhs = stripData(wrbk,wrbk_heating)
     COPs = getCOPs(MBhs, kws, con_rate)
     COPs_heating = getHeatingCOPs(wrbk_heating)
-    c,i,ch,ih = getCoeffs(COPs,COPs_heating,temps,heating_temps)
+    c,i,ch,ih = getCoeffs(COPs,COPs_heating,cooling_temps,heating_temps)
     
 ##For average heating and cooling line at T_ref = 65, uncomment this
 #    a,b,x,y = 0,0,0,0
@@ -268,7 +268,7 @@ def main():
 #    y = y / len(c)
 #
 #    print(a,b,x,y)
-
+    print_results()
     print_results(c, i, ch, ih)
     if plotting == True:
         plot_results(c,i,ch,ih)
