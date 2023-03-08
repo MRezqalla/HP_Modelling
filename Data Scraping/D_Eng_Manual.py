@@ -1,3 +1,8 @@
+# file name: R410A_FRXG_RXG_91215.pdf
+    # First page - 10
+    # Last Page - 15
+    # Skip - 2
+
 import sys
 try:
     import tabula as tb
