@@ -1,4 +1,7 @@
 import sys
+import os
+
+os.chdir('/Users/kbiscoch/Documents/Research_remote/GitHub/HP_Modelling/Data Scraping')
 
 ##START - FIRST Page of FIRST HP model u want to study
 ##END - FIRST Page of LAST HP model u want to study
@@ -9,7 +12,7 @@ HEAT = 14
 
 try:
     import CoolProp.CoolProp as CP #package that gets thermodynamic properties for stuff
-    # import tabula as tb
+    import tabula as tb
     import pandas as pd
     import re
     import numpy as np
@@ -63,8 +66,8 @@ def print_results(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
 #file - data file (pdf)
 def generateExcel(file):
     
-    data = tb.read_pdf(file,area = [50,0,555,780], pages=str(START)+"-"+str(END),lattice=False,pandas_options={'header': None},stream=True)
-    heating_data = tb.read_pdf(file, pages=HEAT,pandas_options={'header': None},stream=True)
+    data = tb.read_pdf(file,area = [50,0,555,780], pages=str(4)+"-"+str(11),lattice=False,pandas_options={'header': None},stream=True)
+    heating_data = tb.read_pdf(file, pages=12,pandas_options={'header': None},stream=True) # pages argument may change with every PDF
     
     #Cooling data
     i = 0
@@ -247,11 +250,12 @@ def main():
     ##Temperatures that loaded heating data is on
     heating_temps = [65,60,55,50,47,45,40,35,30,25,20,17,15,10,5,0,-5,-10]
 
-    file = input("Enter file name with PDF extenstion included: ")
+    file = input("Enter file name with PDF extenstion included: ") # R410A_DZ20VC.pdf
     wrbk, wrbk_heating = generateExcel(file)
     kws, MBhs = stripData(wrbk,wrbk_heating)
     COPs = getCOPs(MBhs, kws, con_rate)
-    COPs_heating = getHeatingCOPs(wrbk_heating)
+    COPs_heating = getHeatingCOPs(wrbk_heating) # returns empty list for DZ20VC
+    
     c,i,ch,ih = getCoeffs(COPs,COPs_heating,cooling_temps,heating_temps)
     
 ##For average heating and cooling line at T_ref = 65, uncomment this
@@ -268,7 +272,7 @@ def main():
 #    y = y / len(c)
 #
 #    print(a,b,x,y)
-    print_results()
+    # print_results()
     print_results(c, i, ch, ih)
     if plotting == True:
         plot_results(c,i,ch,ih)
