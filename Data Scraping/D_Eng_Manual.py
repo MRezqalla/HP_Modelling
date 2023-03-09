@@ -34,6 +34,8 @@ def get_coeffs(rows_to_study_c_heat,rows_to_study_c_cool,temps,temps_heat,plotti
     intrcpt_c = []
     coeff_h = []
     intrcpt_h = []
+    COP_heating = []
+    COP_cooling = []
 
     for row_h, row_c in zip(rows_to_study_c_heat, rows_to_study_c_cool):
         i = i + 1
@@ -58,6 +60,8 @@ def get_coeffs(rows_to_study_c_heat,rows_to_study_c_cool,temps,temps_heat,plotti
         coeff_h.append(regr_h.coef_)
         intrcpt_c.append(regr_c.intercept_)
         intrcpt_h.append(regr_h.intercept_)
+        COP_heating.append(COP_c)
+        COP_cooling.append(COP_h)
         
         x_c = np.linspace(-20,80)
         y_c = x_c * regr_c.coef_[0] + regr_c.intercept_[0]
@@ -81,7 +85,7 @@ def get_coeffs(rows_to_study_c_heat,rows_to_study_c_cool,temps,temps_heat,plotti
             plt.plot(temps, COP_c)
             plt.plot(temps_heat, COP_h)
             
-    return coeff_c, intrcpt_c, coeff_h, intrcpt_h
+    return coeff_c, intrcpt_c, coeff_h, intrcpt_h, COP_heating, COP_cooling
 
 #Useful data is extracted
 def filter_data(datasets):
@@ -139,7 +143,7 @@ def get_datasets(file):
     datasets = []
     s = int(input("First Page: "))
     e = int(input("Last Page: ")) + 1
-    skip = int(input("Skip: "))
+    skip = int(input("Skip: ")) 
     
     for i in range(s,e,skip):
         start = i
@@ -168,8 +172,8 @@ def generate_excel_files(datasets):
 
 def main():
     #Must be changed to match specific heat pump
-    temps_heat = [50,68,86,95,104,115]
-    temps = [-13,-4,5,14,23,32,43,60]
+    temps_heat = [68, 77, 86, 89.6, 95, 104] # is actually for cooling mode...
+    temps = [14, 23, 32, 43, 50] # is actually for heating mode...
     #Make false if you dont like pictures
     plot = True
     
@@ -177,8 +181,9 @@ def main():
     datasets = get_datasets(file)
     generate_excel_files(datasets)
     AFRs, rtsch, rtscc, rtsfh, rtsfc = filter_data(datasets)
-    coeff_c, intrcpt_c, coeff_h, intrcpt_h = get_coeffs(rtsch, rtscc, temps,temps_heat, plot)
+    coeff_c, intrcpt_c, coeff_h, intrcpt_h, COP_heating, COP_cooling = get_coeffs(rtsch, rtscc, temps,temps_heat, plot)
     print_results(coeff_c, intrcpt_c, coeff_h, intrcpt_h)
+    return COP_heating, COP_cooling, temps, temps_heat # these are ACTUALLY for heating and cooling
     
     
 if __name__ == '__main__':

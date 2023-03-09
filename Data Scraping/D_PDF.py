@@ -8,7 +8,7 @@ os.chdir('/Users/kbiscoch/Documents/Research_remote/GitHub/HP_Modelling/Data Scr
 ##HEAT - Heating values page
 START = 4
 END = 13
-HEAT = 14
+HEAT = 12
 
 try:
     import CoolProp.CoolProp as CP #package that gets thermodynamic properties for stuff
@@ -66,8 +66,8 @@ def print_results(coeff_c, intrcpt_c, coeff_h, intrcpt_h):
 #file - data file (pdf)
 def generateExcel(file):
     
-    data = tb.read_pdf(file,area = [50,0,555,780], pages=str(4)+"-"+str(11),lattice=False,pandas_options={'header': None},stream=True)
-    heating_data = tb.read_pdf(file, pages=12,pandas_options={'header': None},stream=True) # pages argument may change with every PDF
+    data = tb.read_pdf(file,area = [50,0,555,780], pages=str(START)+"-"+str(END),lattice=False,pandas_options={'header': None},stream=True)
+    heating_data = tb.read_pdf(file, pages=HEAT,pandas_options={'header': None},stream=True) # pages argument may change with every PDF
     
     #Cooling data
     i = 0
