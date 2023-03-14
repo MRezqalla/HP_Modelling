@@ -7,7 +7,7 @@ os.chdir('/Users/kbiscoch/Documents/Research_remote/GitHub/HP_Modelling/Data Scr
 ##END - FIRST Page of LAST HP model u want to study
 ##HEAT - Heating values page
 START = 4
-END = 13
+END = 10
 HEAT = 12
 
 try:
@@ -178,7 +178,7 @@ def getCOPs(MBhs,kws,con_rate):
     COPs = []
     for i in range(len(MBhs)):
         COPs.append((np.array(MBhs[i]) * con_rate) / np.array(kws[i]))
-        
+    
     return COPs
 
 #Does linear regression on the COPs and returns the slopes and intercepts of both cooling and heating
@@ -192,11 +192,11 @@ def getCoeffs(COPs,COPs_heating,temps,heating_temps):
     coeffs_h = []
     intrcpts_h = []
     regr = linear_model.LinearRegression()
-    
+    COPs_cooling = []
     
     for copset in COPs[::12]:  
-
-        regr.fit(np.array(temps)[:,None],copset[2::3])
+        COPs_cooling.append(copset[0::3])
+        regr.fit(np.array(temps)[:,None],copset[0::3])
         
 
         coeffs.append(regr.coef_)
@@ -221,7 +221,7 @@ def getCoeffs(COPs,COPs_heating,temps,heating_temps):
         
         i = i + 1
         
-    return coeffs, intrcpts, coeffs_h, intrcpts_h
+    return coeffs, intrcpts, coeffs_h, intrcpts_h, COPs_cooling
 
 def main():
     ##Initialize Variables
@@ -256,7 +256,7 @@ def main():
     COPs = getCOPs(MBhs, kws, con_rate)
     COPs_heating = getHeatingCOPs(wrbk_heating) # returns empty list for DZ20VC
     
-    c,i,ch,ih = getCoeffs(COPs,COPs_heating,cooling_temps,heating_temps)
+    c,i,ch,ih, COPs_cooling = getCoeffs(COPs,COPs_heating,cooling_temps,heating_temps)
     
 ##For average heating and cooling line at T_ref = 65, uncomment this
 #    a,b,x,y = 0,0,0,0
@@ -276,7 +276,8 @@ def main():
     print_results(c, i, ch, ih)
     if plotting == True:
         plot_results(c,i,ch,ih)
-
+    
+    return COPs_cooling, COPs_heating, cooling_temps, heating_temps
     
     # print(c)
     

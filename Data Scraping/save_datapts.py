@@ -24,10 +24,10 @@ temps_cooling = temps_cooling.T
 COP_heating = np.column_stack(COP_heating)
 COP_cooling = np.column_stack(COP_cooling)
 
-column_names = hp_abbrev[15:18]
+column_names = hp_abbrev[0:4]
 column_names.insert(0,'temp')
 cool_df = pd.DataFrame(np.column_stack((temps_cooling,COP_cooling)),columns=column_names)
 heat_df = pd.DataFrame(np.column_stack((temps_heating,COP_heating)),columns=column_names)
 
-cool_df.to_csv('D5cool_COP_temp.csv')
-heat_df.to_csv('D5heat_COP_temp.csv')
+cool_df.to_csv('D1cool_COP_temp.csv')
+heat_df.to_csv('D1heat_COP_temp.csv')
