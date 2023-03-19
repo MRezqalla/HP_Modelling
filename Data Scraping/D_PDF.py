@@ -7,8 +7,8 @@ os.chdir('/Users/kbiscoch/Documents/Research_remote/GitHub/HP_Modelling/Data Scr
 ##END - FIRST Page of LAST HP model u want to study
 ##HEAT - Heating values page
 START = 4
-END = 10
-HEAT = 12
+END = 12
+HEAT = 14
 
 try:
     import CoolProp.CoolProp as CP #package that gets thermodynamic properties for stuff
@@ -277,7 +277,7 @@ def main():
     if plotting == True:
         plot_results(c,i,ch,ih)
     
-    return COPs_cooling, COPs_heating, cooling_temps, heating_temps
+    return COPs_heating, COPs_cooling, heating_temps, cooling_temps  # note: cooling and heating COPS may be reversely labelled
     
     # print(c)
     
